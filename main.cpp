@@ -115,7 +115,6 @@ class Tree
 	void _makeNode(T);
 	void _addNode(Nptr &, Nptr);
 	void _printPre(Nptr);
-	void _printLevel(Queue<Nptr>&, Nptr);
 
 public:
 	Tree():root(NULL){}
@@ -195,7 +194,7 @@ void Tree<T>::printLevel()
 		while (nodes--)
 		{
 			Nptr n = q.deque();
-			cout << endl << level << "\t" << n->data;
+			cout << n->data << "----->>>> level: "<< level-1 << endl;
 			if (n->left)
 			{
 				q.enque(n->left);
@@ -208,28 +207,7 @@ void Tree<T>::printLevel()
 			}
 		}
 		nodes = temp;
-	
-//		_printLevel(q, n);
 		level++;
-	}
-}
-
-template<class T>
-void Tree<T>::_printLevel(Queue<Nptr> &q, Nptr n)
-{
-	if (q.isEmpty())
-	{
-		if (n->left)
-			q.enque(n->left);
-		if (n->right)
-			q.enque(n->right);
-	}
-	else
-	{
-		Nptr m = q.deque();
-		cout << " " << m->data;
-		_printLevel(q, m);
-
 	}
 }
 
@@ -237,28 +215,29 @@ void Tree<T>::_printLevel(Queue<Nptr> &q, Nptr n)
 int main()
 {
 
-	srand(time(0));
-	Queue<int> q;
+	char choice;
 	Tree<int> t;
-	int arr[] = { 7,5,11,4,6,9,13,12 };
 
-	for (int i = 0; i < 8; i++)
+	while (1)
 	{
-		//int n = rand() % 100;
-		t.insert(arr[i]);
-		cout << arr[i] << " ";
+		cin >> choice;
+		switch (choice)
+		{
+			case 'e':
+				exit(1); break;
+			case 'i':
+				int n;
+				cin >> n;
+				t.insert(n); break;
+			case 'p':
+				t.printPre(); 
+				cout << endl; break;
+			case 't':
+				t.printLevel(); break;
+			default:break;
+		}
 
 	}
-
-	cout << endl;
-		//q.enque(i);
-
-	//q.print();
-
-	t.printPre();
-	cout << endl;
-
-	t.printLevel();
 
 	cin.get();
 	return 0;
