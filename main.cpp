@@ -3,7 +3,7 @@
 #include<time.h>
 
 using namespace std;
-
+int count = 0;
 template<class T>
 class Queue
 {
@@ -115,7 +115,7 @@ class Tree
 	void _makeNode(T);
 	void _addNode(Nptr &, Nptr);
 	void _printPre(Nptr);
-	void _printLevel(Queue<Nptr>&);
+	void _printLevel(Queue<Nptr>&, Nptr);
 
 public:
 	Tree():root(NULL){}
@@ -185,28 +185,50 @@ void Tree<T>::printLevel()
 	Queue<Nptr> q;
 
 	q.enque(root);
+	int nodes = 1;
 
-	static int level = 0;
+	static int level = 1;
 
 	while (!q.isEmpty())
 	{
-		_printLevel(q);
+		int temp=0;
+		while (nodes--)
+		{
+			Nptr n = q.deque();
+			cout << endl << level << "\t" << n->data;
+			if (n->left)
+			{
+				q.enque(n->left);
+				temp++;
+			}
+			if (n->right)
+			{
+				q.enque(n->right);
+				temp++;
+			}
+		}
+		nodes = temp;
+	
+//		_printLevel(q, n);
+		level++;
 	}
 }
 
 template<class T>
-void Tree<T>::_printLevel(Queue<Nptr> &q)
+void Tree<T>::_printLevel(Queue<Nptr> &q, Nptr n)
 {
-	if (!q.isEmpty())
+	if (q.isEmpty())
 	{
-		Nptr n = q.deque();
-		cout << n->data<<" ";
 		if (n->left)
 			q.enque(n->left);
 		if (n->right)
 			q.enque(n->right);
-
-		_printLevel(q);
+	}
+	else
+	{
+		Nptr m = q.deque();
+		cout << " " << m->data;
+		_printLevel(q, m);
 
 	}
 }
@@ -218,12 +240,13 @@ int main()
 	srand(time(0));
 	Queue<int> q;
 	Tree<int> t;
+	int arr[] = { 7,5,11,4,6,9,13,12 };
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		int n = rand() % 100;
-		t.insert(n);
-		cout << n << " ";
+		//int n = rand() % 100;
+		t.insert(arr[i]);
+		cout << arr[i] << " ";
 
 	}
 
